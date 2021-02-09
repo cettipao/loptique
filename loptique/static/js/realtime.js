@@ -1,3 +1,18 @@
+function getDescuento(descuento,subtotal){
+    var total_descuento = 0;
+
+    if (descuento.value.toLowerCase().search("f") === -1){
+        total_descuento = (parseFloat(descuento.value)*subtotal.value)/100;
+    }
+    else{
+        total_descuento = parseFloat(descuento.value)
+    }
+    if (isNaN(total_descuento)){
+        total_descuento = 0;
+        descuento.value = 0;
+    }
+    return total_descuento;
+}
 function change_saldo() {
     const subtotal = document.querySelector('#id_sub_total');
     subtotal.value = (parseFloat(document.querySelector('#id_anteojolejos-0-precio_final_lente').value) +
@@ -12,16 +27,18 @@ function change_saldo() {
     const seña = document.querySelector('#id_seña');
     const descuento = document.querySelector('#id_descuento');
     const saldo = document.querySelector('.field-saldo');
-    const total = document.querySelector('.field-total');
-    saldo.innerHTML = " <div><label>Saldo:</label><p>" + (subtotal.value - descuento.value - seña.value) + "</p></div>"
-    total.innerHTML = " <div><label>Total:</label><p>" + (subtotal.value - descuento.value) + "</p></div>"
+    const total = document.querySelector('#id_total');
+    const total_descuento = getDescuento(descuento,subtotal);
+    saldo.innerHTML = " <div><label>Saldo:</label><p>" + (subtotal.value - total_descuento - seña.value) + "</p></div>"
+    total.value = (subtotal.value - total_descuento);
 }
 
 function change_lente1() {
     const lente = document.querySelector('#id_anteojolejos-0-precio_lente');
     const descuento = document.querySelector('#id_anteojolejos-0-descuento_lente');
     const final = document.querySelector('#id_anteojolejos-0-precio_final_lente');
-    final.value = (lente.value - descuento.value);
+    const total_descuento = getDescuento(descuento,lente);
+    final.value = (lente.value - total_descuento);
     change_saldo();
 }
 
@@ -29,7 +46,8 @@ function change_lente2() {
     const lente = document.querySelector('#id_anteojocerca-0-precio_lente');
     const descuento = document.querySelector('#id_anteojocerca-0-descuento_lente');
     const final = document.querySelector('#id_anteojocerca-0-precio_final_lente');
-    final.value = (lente.value - descuento.value);
+    const total_descuento = getDescuento(descuento,lente);
+    final.value = (lente.value - total_descuento);
     change_saldo();
 }
 
@@ -37,7 +55,8 @@ function change_multifocal() {
     const precio = document.querySelector('#id_multifocal-0-precio');
     const descuento = document.querySelector('#id_multifocal-0-descuento');
     const final = document.querySelector('#id_multifocal-0-precio_final');
-    final.value = (precio.value - descuento.value);
+    const total_descuento = getDescuento(descuento,precio);
+    final.value = (precio.value - total_descuento);
     change_saldo();
 }
 
@@ -46,10 +65,11 @@ function change_armazon1() {
     const precio_armazon = document.querySelector('#id_anteojolejos-0-precio_armazon');
     const descuento_armazon = document.querySelector('#id_anteojolejos-0-descuento_armazon');
     const final_armazon = document.querySelector('#id_anteojolejos-0-precio_final_armazon');
-    const nombre_armazon = armazon.textContent
+    const nombre_armazon = armazon.title
     var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
     precio_armazon.value = precio;
-    final_armazon.value = precio - descuento_armazon.value;
+    const total_descuento = getDescuento(descuento_armazon,precio_armazon);
+    final_armazon.value = precio - total_descuento;
     change_saldo();
 }
 
@@ -78,7 +98,8 @@ function change_tratamientos1() {
         }
     }
     precio_tratamientos.value = precio_total;
-    final_tratamientos.value = precio_total - descuento_tratamientos.value;
+    const total_descuento = getDescuento(descuento_tratamientos,precio_tratamientos);
+    final_tratamientos.value = precio_total - total_descuento;
     change_saldo();
 //var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
 //precio_armazon.value = precio;
@@ -90,10 +111,11 @@ function change_armazon2() {
     const precio_armazon = document.querySelector('#id_anteojocerca-0-precio_armazon');
     const descuento_armazon = document.querySelector('#id_anteojocerca-0-descuento_armazon');
     const final_armazon = document.querySelector('#id_anteojocerca-0-precio_final_armazon');
-    const nombre_armazon = armazon.textContent
+    const nombre_armazon = armazon.title
     var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
     precio_armazon.value = precio;
-    final_armazon.value = precio - descuento_armazon.value;
+    const total_descuento = getDescuento(descuento_armazon,precio_armazon);
+    final_armazon.value = precio - total_descuento;
     change_saldo();
 }
 
@@ -122,7 +144,8 @@ function change_tratamientos2() {
         }
     }
     precio_tratamientos.value = precio_total;
-    final_tratamientos.value = precio_total - descuento_tratamientos.value;
+    const total_descuento = getDescuento(descuento_tratamientos,precio_tratamientos);
+    final_tratamientos.value = precio_total - total_descuento;
     change_saldo();
 //var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
 //precio_armazon.value = precio;
@@ -142,6 +165,10 @@ $(function() {
     });
     const descuento_total = document.querySelector('#id_descuento');
     descuento_total.addEventListener('change', (event) => {
+        change_saldo();
+    });
+    const total = document.querySelector('#id_total');
+    total.addEventListener('change', (event) => {
         change_saldo();
     });
 
@@ -176,15 +203,9 @@ $(function() {
         change_multifocal();
     });
 
-    /*var armazon = document.querySelector('#select2-id_anteojolejos-0-armazon-container');
-    armazon.addEventListener('click', (event) => {
-        console.log("VAMA")
-        change_armazon1();
-    });*/
 
     jQuery('#select2-id_anteojolejos-0-armazon-container').on('DOMSubtreeModified', function (e) {
-        console.log("lee el que puto")
-        change_armazon1(); 
+        change_armazon1();
     });
 
     const precio_armazon = document.querySelector('#id_anteojolejos-0-precio_armazon');
@@ -200,11 +221,10 @@ $(function() {
         change_armazon1();
     });
 
-
-    const tratamientos = document.querySelector('#id_anteojolejos-0-tratamientos');
-    tratamientos.addEventListener('change', (event) => {
+    jQuery('#id_anteojolejos-0-tratamientos').next().on('DOMSubtreeModified', function (e) {
         change_tratamientos1();
     });
+
     const precio_tratamientos = document.querySelector('#id_anteojolejos-0-precio_tratamientos');
     precio_tratamientos.addEventListener('change', (event) => {
         change_tratamientos1();
@@ -220,8 +240,9 @@ $(function() {
 
     //
 
-    //var armazon2 = document.querySelector('.select2-selection__rendered');
-
+    jQuery('#select2-id_anteojocerca-0-armazon-container').on('DOMSubtreeModified', function (e) {
+        change_armazon2();
+    });
 
     const precio_armazon2 = document.querySelector('#id_anteojocerca-0-precio_armazon');
     precio_armazon2.addEventListener('change', (event) => {
@@ -236,9 +257,7 @@ $(function() {
         change_armazon2();
     });
 
-
-    const tratamientos2 = document.querySelector('#id_anteojocerca-0-tratamientos');
-    tratamientos2.addEventListener('change', (event) => {
+    jQuery('#id_anteojocerca-0-tratamientos').next().on('DOMSubtreeModified', function (e) {
         change_tratamientos2();
     });
     const precio_tratamientos2 = document.querySelector('#id_anteojocerca-0-precio_tratamientos');

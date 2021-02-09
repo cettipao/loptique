@@ -69,7 +69,7 @@ class RecetaAdmin(admin.ModelAdmin):
     list_filter = ['fecha_inicio', 'doctor__nombre', 'forma_de_pago__descripcion', 'estado_de_pago']
 
     change_form_template = 'btn_imprimir.html'
-    readonly_fields = ('saldo', 'estado_de_pago', 'total',)
+    readonly_fields = ('saldo', 'estado_de_pago', )
     inlines = [AnteojoLejosInLine, AnteojoCercaInLine, MultifocalInLine, PagosInLine]
     fieldsets = (
         ('Principal', {
@@ -141,7 +141,7 @@ class VariosAdmin(admin.ModelAdmin):
     list_display_links = ['paciente', 'fecha_entrega_', 'sub_total', 'estado_de_pago']
     search_fields = ['paciente__nombre', ]
     list_filter = ['fecha_inicio', 'forma_de_pago__descripcion', 'estado_de_pago']
-    readonly_fields = ('total', 'sub_total', 'estado_de_pago')
+    readonly_fields = ('saldo', 'estado_de_pago')
     fieldsets = (
         ('Principal', {
             'fields': (
@@ -149,13 +149,18 @@ class VariosAdmin(admin.ModelAdmin):
         }),
         ('Precio', {
             'fields': (
-                'sub_total', 'descuento', 'seña', 'total', 'estado_de_pago')
+                'sub_total', 'descuento', 'total','seña', 'saldo','estado_de_pago')
         }),
         ('Otros', {
             'fields': (
                 'observaciones',)
         }),
     )
+    class Media:
+
+        js = (
+            'js/realtime2.js',
+        )
 
 
 class IngresoAdmin(admin.ModelAdmin):

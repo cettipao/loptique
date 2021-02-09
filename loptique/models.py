@@ -93,11 +93,11 @@ class Producto(models.Model):
     )
     stock_actual = models.SmallIntegerField(default=0, blank=True)
     comprometido = models.SmallIntegerField(default=0, blank=True)
-    precio_costo_sin_iva = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
-    precio_venta_con_iva = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
+    precio_costo_sin_iva = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
+    precio_venta_con_iva = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
 
     def __str__(self):
-        return self.descripcion
+        return "{} (${})".format(self.descripcion, self.precio_venta_con_iva)
 
 
 class Cristal(models.Model):
@@ -289,7 +289,7 @@ class Anteojo(models.Model):
     )
 
     precio_lente = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
-    descuento_lente = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
+    descuento_lente = models.CharField(max_length=10, default="0", blank=True)
     precio_final_lente = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
 
     armazon = models.ForeignKey(
@@ -300,11 +300,11 @@ class Anteojo(models.Model):
     )
 
     precio_armazon = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
-    descuento_armazon = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
+    descuento_armazon = models.CharField(max_length=10, default="0", blank=True)
     precio_final_armazon = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
 
     precio_tratamientos = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
-    descuento_tratamientos = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
+    descuento_tratamientos = models.CharField(max_length=10, default="0", blank=True)
     precio_final_tratamientos = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
 
     tratamientos = models.ManyToManyField(Tratamiento, blank=True)
@@ -384,8 +384,8 @@ class Multifocal(models.Model):
 
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True,
                                          validators=[MinValueValidator(Decimal('0'))])
-    descuento= models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True,
-                                            validators=[MinValueValidator(Decimal('0'))])
+    descuento = models.CharField(max_length=10, default="0", blank=True)
+
     precio_final = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True,
                                                validators=[MinValueValidator(Decimal('0'))])
 
@@ -416,9 +416,12 @@ class Venta(models.Model):
 
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False)
     seña = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False, blank=True)
-    descuento = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False, blank=True)
+    descuento = models.CharField(max_length=10, default="0", blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False, blank=True)
-    descuento = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False)
+
+    @property
+    def saldo(self):
+        return self.sub_total - self.seña
 
     estados = [
         ("Seña", 'Parcialmente Pagado'),
@@ -460,9 +463,6 @@ class Receta(Venta):
 
     laboratorio = models.CharField(max_length=50, null=False, default="", blank=True)
 
-    @property
-    def saldo(self):
-        return self.sub_total - self.seña
 
     def save(self, *args, **kwargs):
         super(Receta, self).save(*args, **kwargs)
@@ -490,17 +490,6 @@ class Receta(Venta):
 
 class Venta_varios(Venta):
     productos = models.ManyToManyField(Producto)
-
-    @property
-    def total(self):
-        return self.sub_total - (self.seña + self.descuento)
-
-    def save(self, *args, **kwargs):
-        super(Venta_varios, self).save(*args, **kwargs)
-        for p in self.productos.all():
-            print(p.precio_venta_con_iva)
-            self.sub_total = p.precio_venta_con_iva
-        super(Venta_varios, self).save(*args, **kwargs)
 
     def __str__(self):
         return "Compra de {} ({}/{}/{})".format(self.paciente, str(self.fecha_entrega.day),

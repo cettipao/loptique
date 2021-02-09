@@ -19,7 +19,7 @@ class CustomIndexDashboard(Dashboard):
                 },
                 {
                     'title': _('Nueva Venta Varios'),
-                    'url': 'loptique/varios/add/',
+                    'url': 'loptique/venta_varios/add/',
                     'external': False,
                 },
                 {
@@ -42,7 +42,7 @@ class CustomIndexDashboard(Dashboard):
                 },
                 {
                     'title': _('Ver Ventas Varios'),
-                    'url': 'loptique/varios/',
+                    'url': 'loptique/venta_varios/',
                     'external': False,
                 },
                 {
