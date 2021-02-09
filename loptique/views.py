@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import date
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
@@ -7,9 +8,31 @@ from django.utils.safestring import mark_safe
 
 from .models import *
 from .pdfFiller import ProcessPdf
+from .excelGenerator import genExcel
 
 # Create your views here.
 from config.settings import BASE_DIR
+
+def balance_view(request,tipo):
+    today = date.today()
+    if tipo == "dia":
+        transacciones = Transaccion.objects.filter(fecha__year=today.year,
+                                              fecha__month=today.month,
+                                              fecha__day=today.day)
+    elif tipo == "mes":
+        transacciones = Transaccion.objects.filter(fecha__year=today.year,
+                                              fecha__month=today.month, )
+    else:
+        transacciones = Transaccion.objects.all()
+
+    genExcel(transacciones) #Genera el Excel
+    file_path = BASE_DIR + '/loptique/static/' + 'Balance.xlsx' #Busca el excel generado
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response #Devuelve el excel
+    raise Http404
 
 
 def home_view(request):
@@ -28,9 +51,12 @@ def pdf_view(request,id):
     minutos = str(receta.fecha_entrega.minute)
     if len(minutos) == 1:
         minutos = "0" + str(receta.fecha_entrega.minute)
-    hora = str(receta.fecha_entrega.hour-3)
+    hora = receta.fecha_entrega.hour-3
+    if hora < 0:
+        hora = 24 + hora
+    hora = str(hora)
     if len(hora) == 1:
-        hora = "0" + str(receta.fecha_entrega.hour)
+        hora = "0" + hora
 
     armazon = "-"
     lejos_armazon = "-"

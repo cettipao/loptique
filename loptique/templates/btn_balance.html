@@ -1,0 +1,16 @@
+{% extends 'admin/change_list.html' %}
+
+{% block object-tools %}
+    <input type="submit" value="Balance Diario"  onclick="redireccionar('dia')">
+    <input type="submit" value="Balance Mensual"  onclick="redireccionar('mes')">
+    <input type="submit" value="Balance Total"  onclick="redireccionar('total')">
+    <p></p>
+    <script>
+        function redireccionar(tipo) {
+            var url = "//" + location.hostname + ":" + location.port + "/getbalance/" + tipo;
+            window.open(url)
+        }
+    </script>
+
+    {{ block.super }}
+{% endblock %}

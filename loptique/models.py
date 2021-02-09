@@ -440,11 +440,11 @@ class Venta(models.Model):
 
     def save(self, *args, **kwargs):
         super(Venta, self).save(*args, **kwargs)
-        if len(Ingreso.objects.filter(venta=self)) == 0:
-            Ingreso.objects.create(venta=self, monto=self.seña, seña=True,
-                                   descripcion="Seña de {}".format(self.__str__()))
+        if len(Transaccion.objects.filter(venta=self)) == 0:
+            Transaccion.objects.create(venta=self, monto=self.seña, seña=True,
+                                       descripcion="Seña de {}".format(self.__str__()))
         sumaDePagos = 0
-        for pago in Ingreso.objects.filter(venta=self):
+        for pago in Transaccion.objects.filter(venta=self):
             sumaDePagos += pago.monto
         if sumaDePagos >= self.sub_total:
             self.estado_de_pago = "Total"
@@ -502,7 +502,7 @@ class Caja(models.Model):
     total = models.SmallIntegerField(default=0)
 
 
-class Ingreso(models.Model):
+class Transaccion(models.Model):
     descripcion = models.CharField(max_length=254)
     venta = models.ForeignKey(
         'Venta',
@@ -513,6 +513,7 @@ class Ingreso(models.Model):
     monto = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False, validators=[MinValueValidator(Decimal('0'))])
     fecha = models.DateTimeField(null=False, auto_now_add=True)
     seña = models.BooleanField(default=False)
+    egreso = models.BooleanField(default=False)
 
     def isSeña(self):
         return self.seña
@@ -522,11 +523,11 @@ class Ingreso(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if self.isSeña:
+        if self.seña:
             if self.monto != self.venta.seña:
                 self.monto = self.venta.seña
 
-        super(Ingreso, self).save(*args, **kwargs)
+        super(Transaccion, self).save(*args, **kwargs)
 
     def fecha_(self):
         return "{}/{}/{}".format(str(self.fecha.day), str(self.fecha.month),
@@ -536,13 +537,4 @@ class Ingreso(models.Model):
         return "{} ({})".format(self.fecha, self.monto)
 
 
-class Egreso(models.Model):
-    descripcion = models.CharField(max_length=254)
-    monto = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=False, validators=[MinValueValidator(Decimal('0'))])
-    fecha = models.DateTimeField(null=False, auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        super(Egreso, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return "{} ({})".format(self.fecha, self.monto)

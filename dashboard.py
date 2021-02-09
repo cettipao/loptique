@@ -23,8 +23,8 @@ class CustomIndexDashboard(Dashboard):
                     'external': False,
                 },
                 {
-                    'title': _('Agregar Pago'),
-                    'url': 'loptique/ingreso/add/',
+                    'title': _('Agregar Transaccion'),
+                    'url': 'loptique/transaccion/add/',
                     'external': False,
                 },
 
@@ -46,8 +46,8 @@ class CustomIndexDashboard(Dashboard):
                     'external': False,
                 },
                 {
-                    'title': _('Ver Ingresos'),
-                    'url': 'loptique/ingreso/',
+                    'title': _('Ver Transacciones'),
+                    'url': 'loptique/transaccion/',
                     'external': False,
                 },
             ],

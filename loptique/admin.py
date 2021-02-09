@@ -59,7 +59,7 @@ class MultifocalInLine(admin.StackedInline):  # Para ver los prestamos de la per
 
 
 class PagosInLine(admin.TabularInline):  # Para ver los prestamos de la persona
-    model = Ingreso
+    model = Transaccion
 
 
 class RecetaAdmin(admin.ModelAdmin):
@@ -101,7 +101,7 @@ class RecetaAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
     class Media:
-        html = ('html/btn_imprimir.html')
+        html = ('btn_imprimir.html')
 
         js = (
             'js/realtime.js',
@@ -163,11 +163,12 @@ class VariosAdmin(admin.ModelAdmin):
         )
 
 
-class IngresoAdmin(admin.ModelAdmin):
+class TransaccionAdmin(admin.ModelAdmin):
+    change_list_template = "btn_balance.html"
     list_display = ['descripcion', 'fecha_', 'monto']
     list_display_links = ['descripcion', 'fecha_', 'monto']
     search_fields = ['descripcion', ]
-    list_filter = ['seña', 'fecha']
+    list_filter = ['seña', 'fecha', 'egreso']
 
 
 class PacienteAdmin(admin.ModelAdmin):
@@ -202,5 +203,4 @@ admin.site.register(Cuota, )
 admin.site.register(Proveedor, )
 admin.site.register(Producto, )
 admin.site.register(Material, )
-admin.site.register(Ingreso, IngresoAdmin)
-admin.site.register(Egreso)
+admin.site.register(Transaccion, TransaccionAdmin)
