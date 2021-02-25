@@ -67,6 +67,9 @@ function change_armazon1() {
     const final_armazon = document.querySelector('#id_anteojolejos-0-precio_final_armazon');
     const nombre_armazon = armazon.title
     var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
+    if (isNaN(precio)){
+        precio = 0;
+    }
     precio_armazon.value = precio;
     const total_descuento = getDescuento(descuento_armazon,precio_armazon);
     final_armazon.value = precio - total_descuento;
@@ -113,6 +116,9 @@ function change_armazon2() {
     const final_armazon = document.querySelector('#id_anteojocerca-0-precio_final_armazon');
     const nombre_armazon = armazon.title
     var precio = parseFloat(nombre_armazon.slice(nombre_armazon.indexOf("$") + 1, nombre_armazon.indexOf(")")));
+    if (isNaN(precio)){
+        precio = 0;
+    }
     precio_armazon.value = precio;
     const total_descuento = getDescuento(descuento_armazon,precio_armazon);
     final_armazon.value = precio - total_descuento;
@@ -160,6 +166,7 @@ $(function() {
         change_saldo();
     });
     const subtotal = document.querySelector('#id_sub_total');
+    //subtotal.disabled = true;
     subtotal.addEventListener('change', (event) => {
         change_saldo();
     });
@@ -168,6 +175,7 @@ $(function() {
         change_saldo();
     });
     const total = document.querySelector('#id_total');
+    //total.disabled = true;
     total.addEventListener('change', (event) => {
         change_saldo();
     });
@@ -180,6 +188,11 @@ $(function() {
     descuento.addEventListener('change', (event) => {
         change_lente1();
     });
+    const final_lente = document.querySelector('#id_anteojolejos-0-precio_final_lente');
+    //final_lente.disabled = true;
+    final_lente.addEventListener('change', (event) => {
+        change_lente1();
+    });
 
     const lente2 = document.querySelector('#id_anteojocerca-0-precio_lente');
     lente2.addEventListener('change', (event) => {
@@ -187,6 +200,11 @@ $(function() {
     });
     const descuento2 = document.querySelector('#id_anteojocerca-0-descuento_lente');
     descuento2.addEventListener('change', (event) => {
+        change_lente2();
+    });
+    const final_lente2 = document.querySelector('#id_anteojocerca-0-precio_final_lente');
+    //final_lente2.disabled = true;
+    final_lente2.addEventListener('change', (event) => {
         change_lente2();
     });
 
@@ -209,6 +227,7 @@ $(function() {
     });
 
     const precio_armazon = document.querySelector('#id_anteojolejos-0-precio_armazon');
+    //precio_armazon.disabled = true;
     precio_armazon.addEventListener('change', (event) => {
         change_armazon1();
     });
@@ -217,6 +236,7 @@ $(function() {
         change_armazon1();
     });
     const final_armazon = document.querySelector('#id_anteojolejos-0-precio_final_armazon');
+    //final_armazon.disabled = true;
     final_armazon.addEventListener('change', (event) => {
         change_armazon1();
     });
@@ -226,6 +246,7 @@ $(function() {
     });
 
     const precio_tratamientos = document.querySelector('#id_anteojolejos-0-precio_tratamientos');
+    //precio_tratamientos.disabled = true;
     precio_tratamientos.addEventListener('change', (event) => {
         change_tratamientos1();
     });
@@ -234,6 +255,7 @@ $(function() {
         change_tratamientos1();
     });
     const final_tratamientos = document.querySelector('#id_anteojolejos-0-precio_final_tratamientos');
+    //final_tratamientos.disabled = true;
     final_tratamientos.addEventListener('change', (event) => {
         change_tratamientos1();
     });
@@ -245,6 +267,7 @@ $(function() {
     });
 
     const precio_armazon2 = document.querySelector('#id_anteojocerca-0-precio_armazon');
+    //precio_armazon2.disabled = true;
     precio_armazon2.addEventListener('change', (event) => {
         change_armazon2();
     });
@@ -253,6 +276,7 @@ $(function() {
         change_armazon2();
     });
     const final_armazon2 = document.querySelector('#id_anteojocerca-0-precio_final_armazon');
+    //final_armazon2.disabled = true;
     final_armazon2.addEventListener('change', (event) => {
         change_armazon2();
     });
@@ -261,6 +285,7 @@ $(function() {
         change_tratamientos2();
     });
     const precio_tratamientos2 = document.querySelector('#id_anteojocerca-0-precio_tratamientos');
+    //precio_tratamientos2.disabled = true;
     precio_tratamientos2.addEventListener('change', (event) => {
         change_tratamientos2();
     });
@@ -269,6 +294,7 @@ $(function() {
         change_tratamientos2();
     });
     const final_tratamientos2 = document.querySelector('#id_anteojocerca-0-precio_final_tratamientos');
+    //final_tratamientos2.disabled = true;
     final_tratamientos2.addEventListener('change', (event) => {
         change_tratamientos2();
     });

@@ -118,7 +118,7 @@ def pdf_view(request,id):
         lejos_oi_esfera = lejos.oi_esfera
         lejos_oi_cilindro = lejos.oi_cilindro
         lejos_oi_eje = lejos.oi_eje
-        if lejos.distancia_interpupilar == 0:
+        if lejos.distancia_interpupilar != 0:
             lejos_distancia_interpupilar = lejos.distancia_interpupilar
         
     if cerca:
@@ -138,7 +138,7 @@ def pdf_view(request,id):
         cerca_oi_esfera = cerca.oi_esfera
         cerca_oi_cilindro = cerca.oi_cilindro
         cerca_oi_eje = cerca.oi_eje
-        if cerca.distancia_interpupilar == 0:
+        if cerca.distancia_interpupilar != 0:
             cerca_distancia_interpupilar = cerca.distancia_interpupilar
 
     if Multifocal.objects.filter(receta=receta):
@@ -172,7 +172,6 @@ def pdf_view(request,id):
                                                                             "Apellido y Nombre 1": str(receta.paciente.nombre),
                                                                             "Entrega 1": "$" + str(receta.seña),
                                                                             "Armazon 1": armazon,
-                                                                            "Modelo 1": "",
                                                                             "Saldo1": "$" + str(receta.total - receta.seña),
                                                                             "Tipo de Cristal": tipo,
                                                                             "Forma de Pago 1": forma_pago,
@@ -218,7 +217,6 @@ def pdf_view(request,id):
                                                                             "M_DI_Cerca": m_DI_Cerca,
                                                                             "Multifocal_Altura": multifocal_Altura,
                                                                             "Multifocal_Precio": "$" + str(multifocal_Precio),
-                                                                            "Di": "",
                                                                             "Precio 2": "$" + str(receta.sub_total),
                                                                             "Armazon 2": armazon,
                                                                             "Neto 2": "$" + str(receta.total),

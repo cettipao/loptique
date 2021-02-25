@@ -1,4 +1,6 @@
 from decimal import Decimal
+from django.core.validators import RegexValidator
+my_validator = RegexValidator("^[^$)]+$", "No puede contener '$' ni ')'.")
 
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -83,7 +85,7 @@ class Producto(models.Model):
         blank=True
     )
     codigo_patilla = models.CharField(max_length=50, null=True, blank=True)
-    descripcion = models.CharField(max_length=50, null=False)
+    descripcion = models.CharField(max_length=50, null=False, validators=[my_validator])
     codigo_secundario = models.CharField(max_length=50, null=True, blank=True)
     grupo = models.ForeignKey(
         'GrupoProducto',
@@ -130,7 +132,7 @@ class Material(models.Model):
         verbose_name_plural = "materiales"
 
 class Armazon(models.Model):
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, validators=[my_validator])
     proveedor = models.ForeignKey(
         'Proveedor',
         on_delete=models.SET_NULL,
@@ -147,7 +149,7 @@ class Armazon(models.Model):
         verbose_name_plural = "armazones"
 
 class Tratamiento(models.Model):
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, validators=[my_validator])
 
     precio_costo_sin_iva = models.SmallIntegerField(null=True, blank=True, validators=[MinValueValidator(Decimal('0'))])
     precio_venta_con_iva = models.SmallIntegerField(validators=[MinValueValidator(Decimal('0'))])
@@ -441,8 +443,9 @@ class Venta(models.Model):
     def save(self, *args, **kwargs):
         super(Venta, self).save(*args, **kwargs)
         if len(Transaccion.objects.filter(venta=self)) == 0:
-            Transaccion.objects.create(venta=self, monto=self.seña, seña=True,
-                                       descripcion="Seña de {}".format(self.__str__()))
+            if self.seña > 0:
+                Transaccion.objects.create(venta=self, monto=self.seña, seña=True,
+                                           descripcion="Seña de {}".format(self.__str__()))
         sumaDePagos = 0
         for pago in Transaccion.objects.filter(venta=self):
             sumaDePagos += pago.monto
