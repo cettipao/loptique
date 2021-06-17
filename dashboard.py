@@ -36,6 +36,11 @@ class CustomIndexDashboard(Dashboard):
             _('Ver'),
             children=[
                 {
+                    'title': _('Ver Productos'),
+                    'url': 'loptique/producto/',
+                    'external': False,
+                },
+                {
                     'title': _('Ver Recetas'),
                     'url': 'loptique/receta/',
                     'external': False,

@@ -177,9 +177,16 @@ class PacienteAdmin(admin.ModelAdmin):
     search_fields = ['nombre', 'cuit', 'email', 'telefono']
     list_filter = ['sexo', 'obra_social__nombre']
 
+class ProductoAdmin(admin.ModelAdmin):
+    list_display = ['codigo', 'rubro', 'marca', 'stock_actual', 'precio_de_lista', 'precio_contado']
+    list_display_links = ['codigo', 'rubro', 'marca', 'stock_actual', 'precio_de_lista', 'precio_contado']
+    #list_editable = [ 'modelo', 'color', 'rubro', 'marca', 'stock_actual', 'precio_de_lista', 'precio_contado']
+    search_fields = ['modelo', 'descripcion',]
+    list_filter = ['proveedor', 'color', 'marca', 'rubro',]
+
 
 admin.site.register(Venta_varios, VariosAdmin)
-admin.site.register(Armazon)
+#admin.site.register(Armazon)
 admin.site.register(Banco, )
 admin.site.register(Color, )
 admin.site.register(Cristal, )
@@ -201,6 +208,6 @@ admin.site.register(Cuota, )
 # admin.site.register(AnteojoLejos, AnteojoLejosAdmin)
 # admin.site.register(AnteojoCerca, AnteojoCercaAdmin)
 admin.site.register(Proveedor, )
-admin.site.register(Producto, )
+admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Material, )
 admin.site.register(Transaccion, TransaccionAdmin)

@@ -59,21 +59,28 @@ class Persona(models.Model):
 
 
 class Rubro(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre
 
 
 class Producto(models.Model):
-    rubro = models.ForeignKey(
-        'Rubro',
+    proveedor = models.ForeignKey(
+        'Proveedor',
         on_delete=models.SET_NULL,
         null=True,
         blank=True
     )
-    proveedor = models.ForeignKey(
-        'Proveedor',
+    modelo = models.CharField(max_length=20, null=True, blank=True, validators=[my_validator])
+    color = models.ForeignKey(
+        'Color',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    rubro = models.ForeignKey(
+        'Rubro',
         on_delete=models.SET_NULL,
         null=True,
         blank=True
@@ -84,9 +91,8 @@ class Producto(models.Model):
         null=True,
         blank=True
     )
-    codigo_patilla = models.CharField(max_length=50, null=True, blank=True)
-    descripcion = models.CharField(max_length=50, null=False, validators=[my_validator])
-    codigo_secundario = models.CharField(max_length=50, null=True, blank=True)
+    descripcion = models.CharField(max_length=50, null=True, blank=True, validators=[my_validator])
+
     grupo = models.ForeignKey(
         'GrupoProducto',
         on_delete=models.SET_NULL,
@@ -95,15 +101,23 @@ class Producto(models.Model):
     )
     stock_actual = models.SmallIntegerField(default=0, blank=True)
     comprometido = models.SmallIntegerField(default=0, blank=True)
-    precio_costo_sin_iva = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
-    precio_venta_con_iva = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
+    precio_de_lista = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
+    precio_contado = models.SmallIntegerField(blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
+
+    @property
+    def codigo(self):
+        if self.descripcion:
+            return self.descripcion
+        return "{}/{}/".format(self.proveedor.codigo, self.modelo, """self.color.codigo""")
 
     def __str__(self):
-        return "{} (${})".format(self.descripcion, self.precio_venta_con_iva)
+        if self.descripcion:
+            return self.descripcion
+        return "{}/{}/".format(self.proveedor.codigo, self.modelo, """self.color.codigo""")
 
 
 class Cristal(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     precio_costo_sin_iva = models.DecimalField(max_digits=5, decimal_places=2, blank=True, default=0, validators=[MinValueValidator(Decimal('0'))])
     precio_venta_con_iva = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(Decimal('0'))])
@@ -115,7 +129,7 @@ class Cristal(models.Model):
         verbose_name_plural = "cristales"
 
 class Material(models.Model):
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=30)
     proveedor = models.ForeignKey(
         'Proveedor',
         on_delete=models.SET_NULL,
@@ -131,22 +145,6 @@ class Material(models.Model):
     class Meta:
         verbose_name_plural = "materiales"
 
-class Armazon(models.Model):
-    descripcion = models.CharField(max_length=50, validators=[my_validator])
-    proveedor = models.ForeignKey(
-        'Proveedor',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    precio_costo_sin_iva = models.SmallIntegerField(null=True, blank=True, validators=[MinValueValidator(Decimal('0'))])
-    precio_venta_con_iva = models.SmallIntegerField(validators=[MinValueValidator(Decimal('0'))])
-
-    def __str__(self):
-        return "{} (${})".format(self.descripcion, self.precio_venta_con_iva)
-
-    class Meta:
-        verbose_name_plural = "armazones"
 
 class Tratamiento(models.Model):
     descripcion = models.CharField(max_length=50, validators=[my_validator])
@@ -159,7 +157,18 @@ class Tratamiento(models.Model):
 
 
 class Color(models.Model):
-    nombre = models.CharField(max_length=50)
+    codigo = models.CharField(max_length=10)
+    nombre = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name_plural = "colores"
+
+class ColorAnteojo(models.Model):
+    codigo = models.CharField(max_length=10)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre
@@ -168,8 +177,8 @@ class Color(models.Model):
         verbose_name_plural = "colores"
 
 class Marca(models.Model):
-    nombre = models.CharField(max_length=50)
-    proovedor = models.ForeignKey(
+    nombre = models.CharField(max_length=30)
+    proveedor = models.ForeignKey(
         'Proveedor',
         on_delete=models.SET_NULL,
         null=True,
@@ -181,27 +190,29 @@ class Marca(models.Model):
 
 
 class GrupoProducto(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre
 
 
 class GrupoPaciente(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre
 
 
 class Banco(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre
 
 
-class Proveedor(Persona):
+class Proveedor(models.Model):
+    codigo = models.CharField(max_length=10, default="", blank=True)
+    nombre = models.CharField(max_length=30, default="", blank=True)
     banco = models.ForeignKey(
         'Banco',
         on_delete=models.SET_NULL,
@@ -211,7 +222,7 @@ class Proveedor(Persona):
     cbu = models.CharField(max_length=50, default="", blank=True)
 
     def __str__(self):
-        return self.nombre
+        return "{}".format(self.codigo)
 
     class Meta:
         verbose_name_plural = "proveedores"
@@ -248,7 +259,7 @@ class Doctor(Persona):
         verbose_name_plural = "Doctores"
 
 class Obra_Social(models.Model):
-    nombre = models.CharField(max_length=50, default="")
+    nombre = models.CharField(max_length=30, default="")
 
     def __str__(self):
         return self.nombre
@@ -284,7 +295,7 @@ class Anteojo(models.Model):
         blank=True,
     )
     color = models.ForeignKey(
-        'Color',
+        'ColorAnteojo',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -295,7 +306,7 @@ class Anteojo(models.Model):
     precio_final_lente = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, validators=[MinValueValidator(Decimal('0'))])
 
     armazon = models.ForeignKey(
-        'Armazon',
+        'Producto',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -360,7 +371,7 @@ class AnteojoCerca(Anteojo):
         verbose_name_plural = "Anteojos Cerca"
 
 class Tipo_Multifocal(models.Model):
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
         return self.nombre

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Receta</title>
+    <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma-rtl.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+
+<div class="row">
+    <div id="test1" class="col s12"><a class="subheader ">Cliente</a>
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="nombre" type="text" class="autocomplete">
+                        <label for="nombre">Apellido y Nombre</label>
+                    </div>
+                    <script>
+                            $(document).ready(function () {
+                                $('input.autocomplete').autocomplete({
+                                    data: {{pacientes|safe}},
+                                });
+                            });
+                        </script>
+                    <div class="input-field col s3">
+                        <input id="celular" type="text" class="validate">
+                        <label for="celular">Celular</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input id="domicilio" type="text" class="validate">
+                        <label for="domicilio">Domicilio</label>
+                    </div>
+                    <div class="input-field col s1">
+                        <a class="btn-floating btn waves-effect waves-light cyan lighten-2"><i class="material-icons">assignment_ind</i></a>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+    <div id="test2" class="col s12">{# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx #}
+        <div class="divider"></div>
+        <a class="subheader">Lejos</a>
+        <div class="row">
+            <div class="input-field col s1">
+                <input id="odLejos" type="text">
+                <label for="odLejos">OD:Esf</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odCilLejos" type="text">
+                <label for="odCilLejos">CIL</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odEjeLejos" type="text">
+                <label for="odEjeLejos">Eje</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odAddLejos" type="text">
+                <label for="odAddLejos">Add.</label>
+            </div>
+            <div class="input-field col s1">
+
+                <input id="DiLejos" type="text">
+                <label for="DiLejos">D.I</label>
+
+            </div>
+            <div class="input-field col s3">
+                <select>
+                    <option value="" disabled selected>Elije Tipo</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Tipo</label>
+            </div>
+            <div class="input-field col s3">
+                <select>
+                    <option value="" disabled selected>Elije Color</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Color</label>
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s1">
+                <input id="oiLejos" type="text">
+                <label for="oiLejos">OI:Esf</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiCilLejos" type="text">
+                <label for="oiCilLejos">CIL</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiEjeLejos" type="text">
+                <label for="oiEjeLejos">Eje</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiAddLejos" type="text">
+                <label for="oiAddLejos">Add.</label>
+            </div>
+            <div class="input-field col s1">
+
+                <input id="DiLejos" type="text">
+                <label for="DiLejos">D.I</label>
+
+            </div>
+            <div class="input-field col s6">
+                <input id="armazonLejos" type="text">
+                <label for="armazonLejos">Armazon</label>
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <select>
+                    <option value="" disabled selected>Elije Tratamientos</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Tratamientos</label>
+            </div>
+            <div class="input-field col s1">
+                <a class="btn-floating btn waves-effect waves-light cyan lighten-2"><i
+                        class="material-icons">add</i></a>
+            </div>
+            <div class="input-field col s6">
+                <div class="chip">
+                    Example
+                    <i class="close material-icons">close</i>
+                </div>
+
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+    </div>
+    <div id="test3" class="col s12">
+        <div class="divider"></div>
+        <a class="subheader">Cerca</a>
+        <div class="row">
+            <div class="input-field col s1">
+                <input id="odCerca" type="text">
+                <label for="odCerca">OD:Esf</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odCilCerca" type="text">
+                <label for="odCilCerca">CIL</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odEjeCerca" type="text">
+                <label for="odEjeCerca">Eje</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="odAddCerca" type="text">
+                <label for="odAddCerca">Add.</label>
+            </div>
+            <div class="input-field col s1">
+
+                <input id="DiCerca" type="text">
+                <label for="DiCerca">D.I</label>
+
+            </div>
+            <div class="input-field col s3">
+                <select>
+                    <option value="" disabled selected>Elije Tipo</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Tipo</label>
+            </div>
+            <div class="input-field col s3">
+                <select>
+                    <option value="" disabled selected>Elije Color</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Color</label>
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s1">
+                <input id="oiCerca" type="text">
+                <label for="oiCerca">OI:Esf</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiCilCerca" type="text">
+                <label for="oiCilCerca">CIL</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiEjeCerca" type="text">
+                <label for="oiEjeCerca">Eje</label>
+            </div>
+            <div class="input-field col s1">
+                <input id="oiAddCerca" type="text">
+                <label for="oiAddCerca">Add.</label>
+            </div>
+            <div class="input-field col s1">
+
+                <input id="DiCerca" type="text">
+                <label for="DiCerca">D.I</label>
+
+            </div>
+            <div class="input-field col s6">
+                <input id="armazonCerca" type="text">
+                <label for="armazonCerca">Armazon</label>
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <select>
+                    <option value="" disabled selected>Elije Tratamientos</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+                <label>Tratamientos</label>
+            </div>
+            <div class="input-field col s1">
+                <a class="btn-floating btn waves-effect waves-light cyan lighten-2"><i
+                        class="material-icons">add</i></a>
+            </div>
+            <div class="input-field col s6">
+                <div class="chip">
+                    Example
+                    <i class="close material-icons">close</i>
+                </div>
+
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioArmazon" type="text" class="green-text">
+            </div>
+        </div>
+    </div>
+    <div id="test4" class="col s12">
+        <div class="divider"></div>
+        <a class="subheader">Multifocal</a>
+        <div class="row">
+            <div class="input-field col s5">
+                <select>
+                    <option value="" disabled selected>Elije Multifocal</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                </select>
+            </div>
+            <div class="input-field col s2">
+                <input id="armazonLejos" type="text">
+                <label for="armazonLejos">D.I Lejos</label>
+            </div>
+            <div class="input-field col s2">
+                <input id="armazonLejos" type="text">
+                <label for="armazonLejos">D.I Cerca</label>
+            </div>
+            <div class="input-field col s2">
+                <input id="armazonLejos" type="text">
+                <label for="armazonLejos">Altura</label>
+            </div>
+            <div class="input-field col s1">
+                <input placeholder="$" id="precioMultifocal" type="text" class="green-text">
+            </div>
+        </div>
+
+
+    </div>
+    <div id="test5" class="col s12">
+        <div class="divider"></div>
+        <a class="subheader">Pago Y Entrega</a>
+        <div class="row">
+            <div class="input-field col s4">
+                <input id="doctor" type="text">
+                <label for="doctor">Doctor</label>
+            </div>
+            <div class="input-field col s8">
+                <input id="observaciones" type="text">
+                <label for="observaciones">Observaciones</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s4">
+                <input id="dia" type="text" class="datepicker">
+                <label for="dia">Fecha Entrega</label>
+            </div>
+            <div class="input-field col s4">
+                <input id="hora" type="text" class="timepicker">
+                <label for="hora">Hora Entrega</label>
+            </div>
+            <div class="input-field col s4">
+                <button class="btn waves-effect waves-light cyan lighten-2" type="submit" name="action">Enviar
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('.tabs').tabs();
+        $('.datepicker').datepicker();
+        $('.timepicker').timepicker();
+
+    });
+
+</script>
+</body>
+</html>

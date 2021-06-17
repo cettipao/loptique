@@ -21,6 +21,7 @@ from config import settings
 urlpatterns = [
     path('grappelli/', include('jet.urls', 'jet')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
+    #path('jet_api/', include('jet_django.urls')),
     path('', include('loptique.urls')),
     path('', admin.site.urls),
 ]

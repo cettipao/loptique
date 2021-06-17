@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import date
+import json
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
@@ -35,12 +36,12 @@ def balance_view(request,tipo):
     raise Http404
 
 
-def home_view(request):
-    pacientes = {}
-    for paciente in Paciente.objects.all():
-        pacientes[paciente.nombre] = ""
+def varios_view(request):
+    return render(request, "variosreceta.html.html", {})
 
-    return render(request, "home.html", {"host": request.get_host(), "pacientes":pacientes})
+
+def receta_view(request):
+    return render(request, "receta.html", {})
 
 
 def pdf_view(request,id):
